@@ -27,30 +27,27 @@ From VS Code press F5
 az ad sp create-for-rbac --name dev-sp-rbac --skip-assignment --sdk-auth > tmpdata/local-sp.json
 ```
 2. Based on tmpdata/local-sp.json, add env variables to thee local.settings.json, Variables section:
-
+```
 "STORAGE_ACCOUNT_NAME": "...",
 "BLOB_CONTAINER_NAME": "...",
 "AZURE_CLIENT_ID": "...",
 "AZURE_CLIENT_SECRET": "...",
 "AZURE_SUBSCRIPTION_ID": "...",
 "AZURE_TENANT_ID": "..."
+```
 
 3. Authorize the service principal to be able to access the test storage blob
+```
 az ad sp list --all --query "[].{displayName:displayName, objectId:objectId}" --output tsv
 az ad sp list --display-name dev-sp-rbac
 az ad sp list --filter "appid eq '...'"
 
 az role definition list --query "[].{name:name, roleType:roleType, roleName:roleName}" --output tsv
 
-
 az role assignment create --assignee "..." \
 --role "Storage Blob Data Contributor" \
 --scope "/subscriptions/5624ad56-ba19-4366-b73f-7d1a242ea122/resourceGroups/aztrdalertfunction/providers/Microsoft.Storage/storageAccounts/aztrdteststorage"
-
-az role assignment create --assignee "55da1fe7-d538-4ada-9159-a90dce35e748" \
---role "Storage Blob Data Contributor" \
---scope "/subscriptions/5624ad56-ba19-4366-b73f-7d1a242ea122/resourceGroups/aztrdalertfunction/providers/Microsoft.Storage/storageAccounts/aztrdalertfunction/blobServices/default"
-
+```
 
 ### Notes
 
